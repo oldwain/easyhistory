@@ -1,16 +1,34 @@
 # coding:utf-8
-from .day import Day
+# from .day import Day
+from .day2 import Day
+from .yahooday import YahooDay
+dayhist = None
 
 
-def init(dtype='D', export='csv', path='history'):
-    return Day(path=path, export=export).init()
+def init(qtype, export, path, start_year='1990'):
+    if qtype.lower() in ['d']:
+        return Day(export, path, start_year).init()
 
 
-def update_single_code(dtype='D', stock_code=None, path='history', export='csv'):
-    if stock_code is None:
-        raise Exception('stock code is None')
-    return Day(path=path, export=export).update_single_code(stock_code)
+def update(dtype='D', export='csv', path='history', start_year='1990'):
+    return Day(export, path, start_year).update()
 
 
-def update(dtype='D', export='csv', path='history'):
-    return Day(path=path, export=export).update()
+def prepare(export='csv', path='history', start_year='1990'):
+    global dayhist
+    dayhist = Day(export, path, start_year)
+
+
+def update_single_code(stock_code):
+    if dayhist is None:
+        print(u'调用update_single_code需先执行prepare')
+    return dayhist.update_single_code(stock_code)
+
+def init_yahoo(qtype, export, path, start_year='1990'):
+    if qtype.lower() in ['d']:
+        return YahooDay(export, path, start_year).init()
+
+def update_single_code_yahoo(stock_code,path):
+    dayhist = YahooDay('csv', path, '1990')
+    return dayhist.update_single_code(stock_code)
+

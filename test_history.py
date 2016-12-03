@@ -3,6 +3,8 @@ from datetime import datetime
 
 import easyhistory
 
+from datetime import datetime
+
 
 class TestHistory(unittest.TestCase):
     def test_get_history(self):
